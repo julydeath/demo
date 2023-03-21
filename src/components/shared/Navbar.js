@@ -11,9 +11,12 @@ import {
 import { FiMenu, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
+  const history = useHistory();
+  const handleLogo = () => history.push('/');
 
   const MenuClicked = () => {
     setMenu(!menu);
@@ -33,7 +36,9 @@ const Navbar = () => {
       justify="space-between"
       p={2}
     >
-      <span>inAcademy</span>
+      <ButtonGroup>
+        <Button onClick={handleLogo}>inAcademy</Button>
+      </ButtonGroup>
 
       <HStack spacing="4">
         {isDesktop && (
@@ -50,9 +55,6 @@ const Navbar = () => {
             <Link to={'/Login.js'}>
               <Button>Login</Button>
             </Link>
-            {/* <Link to={'/SignUp.js'}>
-              <Button>SighUp</Button>
-            </Link> */}
           </ButtonGroup>
         )}
       </HStack>
@@ -86,6 +88,30 @@ const Navbar = () => {
           }
           aria-label="Open Menu"
         />
+      )}
+      {menu && (
+        <ButtonGroup variant="ghost">
+          <div>
+            <Link to={'/'}>
+              <Button>Home</Button>
+            </Link>
+            <div>
+              <Link to={'/courses'}>
+                <Button aria-current="page">Courses</Button>
+              </Link>
+            </div>
+            <div>
+              <Link to={'/my-courses'}>
+                <Button aria-current="page">My Courses</Button>
+              </Link>
+            </div>
+            <div>
+              <Link to={'/Login.js'}>
+                <Button>Login</Button>
+              </Link>
+            </div>
+          </div>
+        </ButtonGroup>
       )}
     </Flex>
     //   </Container>

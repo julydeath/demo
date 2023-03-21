@@ -98,9 +98,8 @@ const Hero = () => {
             fontWeight="medium"
             color={mode('gray.600', 'gray.400')}
           >
-            Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-            lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-            fugiat aliqua.
+            The best Online course platform for learning and improving your
+            skills.
           </Text>
           <Stack
             direction={{

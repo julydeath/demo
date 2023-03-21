@@ -45,7 +45,7 @@ const Footer = () => (
         </ButtonGroup>
       </Stack>
       <Text fontSize="sm" color="subtle">
-        &copy; {new Date().getFullYear()} taggedele, Inc. All rights reserved.
+        &copy; {new Date().getFullYear()} InAcademy, Inc. All rights reserved.
       </Text>
     </Stack>
   </Container>
