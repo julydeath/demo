@@ -18,6 +18,7 @@ import {
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useUserAuth } from '../../context/UserAuthContext';
+import { useHistory } from 'react-router-dom';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,12 +26,14 @@ export default function SignupCard() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { signUp } = useUserAuth();
+  const history = useHistory();
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
     try {
       await signUp(email, password);
+      history.push('/Login.js');
     } catch (error) {
       setError(error.message);
       console.log(error);

@@ -10,8 +10,13 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { HiArrowRight } from 'react-icons/hi';
+import { useHistory } from 'react-router-dom';
 
 const Hero = () => {
+  const history = useHistory();
+  const handleGet = () => history.push('/courses');
+  const handleJoin = () => history.push('/Login.js');
+
   return (
     <Box
       as="section"
@@ -105,17 +110,17 @@ const Hero = () => {
             spacing="4"
             mt="8"
           >
-            <a href="http://localhost:3000/courses">
-              <Button
-                size="lg"
-                colorScheme="purple"
-                height="14"
-                px="8"
-                fontSize="md"
-              >
-                Get Started Now
-              </Button>
-            </a>
+            <Button
+              size="lg"
+              colorScheme="purple"
+              height="14"
+              px="8"
+              fontSize="md"
+              onClick={handleGet}
+            >
+              Get Started Now
+            </Button>
+
             <a href="http://localhost:3000/Login.js">
               <Button
                 size="lg"
@@ -128,6 +133,7 @@ const Hero = () => {
                 px="8"
                 shadow="base"
                 fontSize="md"
+                onClick={handleJoin}
               >
                 Join Now
               </Button>

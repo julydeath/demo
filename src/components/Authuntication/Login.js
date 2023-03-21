@@ -14,16 +14,35 @@ import {
   FormControl,
   FormHelperText,
   InputRightElement,
+  Alert,
 } from '@chakra-ui/react';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
+import { useUserAuth } from '../../context/UserAuthContext';
+import { useHistory } from 'react-router-dom';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
 const App = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { logIn } = useUserAuth();
   const handleShowClick = () => setShowPassword(!showPassword);
+  const history = useHistory();
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    setError('');
+    try {
+      await logIn(email, password);
+      history.push('/');
+    } catch (error) {
+      setError(error.message);
+      console.log(error);
+    }
+  };
 
   return (
     <Flex
@@ -42,8 +61,10 @@ const App = () => {
       >
         <Avatar bg="purple.500" />
         <Heading color="purple.500">Welcome</Heading>
+        {error && <Alert>{error}</Alert>}
+
         <Box minW={{ base: '90%', md: '468px' }}>
-          <form>
+          <form onSubmit={e => handleSubmit(e)}>
             <Stack
               spacing={4}
               p="1rem"
@@ -56,7 +77,11 @@ const App = () => {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="email" placeholder="email address" />
+                  <Input
+                    type="email"
+                    placeholder="email address"
+                    onChange={e => setEmail(e.target.value)}
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -69,6 +94,7 @@ const App = () => {
                   <Input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
+                    onChange={e => setPassword(e.target.value)}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
