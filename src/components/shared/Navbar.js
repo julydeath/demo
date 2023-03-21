@@ -12,14 +12,24 @@ import { FiMenu, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useUserAuth } from '../../context/UserAuthContext';
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const history = useHistory();
   const handleLogo = () => history.push('/');
+  const { user, logOut } = useUserAuth();
 
   const MenuClicked = () => {
     setMenu(!menu);
+  };
+
+  const handleLogOut = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const isDesktop = useBreakpointValue({
@@ -49,12 +59,19 @@ const Navbar = () => {
             <Link to={'/courses'}>
               <Button aria-current="page">Courses</Button>
             </Link>
-            <Link to={'/my-courses'}>
-              <Button aria-current="page">My Courses</Button>
-            </Link>
-            <Link to={'/Login.js'}>
-              <Button>Login</Button>
-            </Link>
+            {user && (
+              <Link to={'/my-courses'}>
+                <Button aria-current="page">My Courses</Button>
+              </Link>
+            )}
+
+            {user ? (
+              <Button onClick={() => handleLogOut()}>Logout</Button>
+            ) : (
+              <Link to={'/login'}>
+                <Button>Login</Button>
+              </Link>
+            )}
           </ButtonGroup>
         )}
       </HStack>
@@ -100,13 +117,15 @@ const Navbar = () => {
                 <Button aria-current="page">Courses</Button>
               </Link>
             </div>
+            {user && (
+              <div>
+                <Link to={'/my-courses'}>
+                  <Button aria-current="page">My Courses</Button>
+                </Link>
+              </div>
+            )}
             <div>
-              <Link to={'/my-courses'}>
-                <Button aria-current="page">My Courses</Button>
-              </Link>
-            </div>
-            <div>
-              <Link to={'/Login.js'}>
+              <Link to={'/login'}>
                 <Button>Login</Button>
               </Link>
             </div>

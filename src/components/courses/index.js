@@ -13,7 +13,7 @@ const CoursePage = () => {
     error,
     isFetching,
     isSuccess,
-  } = useQuery('BlogData', async () => await getAllCoursesData());
+  } = useQuery('allCourses', async () => await getAllCoursesData());
 
   if (isFetching && !products)
     return (

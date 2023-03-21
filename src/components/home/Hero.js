@@ -11,11 +11,15 @@ import {
 } from '@chakra-ui/react';
 import { HiArrowRight } from 'react-icons/hi';
 import { useHistory } from 'react-router-dom';
+import { useUserAuth } from '../../context/UserAuthContext';
 
 const Hero = () => {
   const history = useHistory();
   const handleGet = () => history.push('/courses');
-  const handleJoin = () => history.push('/Login.js');
+  const handleJoin = () => history.push('/login');
+
+  const { user } = useUserAuth();
+  // console.log(user.accessToken);
 
   return (
     <Box
@@ -119,8 +123,23 @@ const Hero = () => {
             >
               Get Started Now
             </Button>
-
-            <a href="http://localhost:3000/Login.js">
+            {user ? (
+              <Button
+                size="lg"
+                bg="white"
+                color="gray.800"
+                _hover={{
+                  bg: 'gray.50',
+                }}
+                height="14"
+                px="8"
+                shadow="base"
+                fontSize="md"
+                onClick={handleJoin}
+              >
+                My Courses
+              </Button>
+            ) : (
               <Button
                 size="lg"
                 bg="white"
@@ -136,7 +155,7 @@ const Hero = () => {
               >
                 Join Now
               </Button>
-            </a>
+            )}
           </Stack>
         </Box>
       </Box>

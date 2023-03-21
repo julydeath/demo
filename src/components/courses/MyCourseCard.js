@@ -9,7 +9,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-
 import { FavouriteButton } from './FavouriteButton';
 
 export const MyCourseCard = props => {

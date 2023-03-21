@@ -9,30 +9,36 @@ import { auth } from '../firebase';
 
 const userAuthContext = createContext();
 
-export function UserAuthContextProvider({ children }) {
+export const UserAuthContextProvider = ({ children }) => {
   const [user, setUser] = useState('');
-  function signUp(email, password) {
+  const signUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
-  }
-  function logIn(email, password) {
+  };
+
+  const logIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
-  }
+  };
+
+  const logOut = () => {
+    return signOut(auth);
+  };
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
     });
+
     return () => {
       unsub();
     };
   }, []);
 
   return (
-    <userAuthContext.Provider value={{ user, signUp, logIn }}>
+    <userAuthContext.Provider value={{ user, signUp, logIn, logOut }}>
       {children}
     </userAuthContext.Provider>
   );
-}
+};
 
 export function useUserAuth() {
   return useContext(userAuthContext);

@@ -49,10 +49,10 @@ function App() {
                 <Route path="/my-courses/read/:id/:section/:chapter">
                   <Chapter />
                 </Route>
-                <Route path="/Login.js">
+                <Route path="/login">
                   <Login />
                 </Route>
-                <Route path="/Signup.js">
+                <Route path="/signup">
                   <SignUp />
                 </Route>
               </Switch>

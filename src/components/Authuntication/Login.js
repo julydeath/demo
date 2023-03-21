@@ -18,19 +18,23 @@ import {
 } from '@chakra-ui/react';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
 import { useUserAuth } from '../../context/UserAuthContext';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link as RouterLink } from 'react-router-dom';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-const App = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { logIn } = useUserAuth();
+  const { logIn, user } = useUserAuth();
   const handleShowClick = () => setShowPassword(!showPassword);
   const history = useHistory();
+
+  if (user) {
+    history.push('/my-courses');
+  }
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -121,12 +125,12 @@ const App = () => {
       </Stack>
       <Box>
         New to us?{' '}
-        <Link color="purple" href="http://localhost:3000/SignUp.js">
-          Sign Up
-        </Link>
+        <RouterLink to={'/signup'}>
+          <Link color="purple">Sign Up</Link>
+        </RouterLink>
       </Box>
     </Flex>
   );
 };
 
-export default App;
+export default Login;

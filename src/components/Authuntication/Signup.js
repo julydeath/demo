@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -17,23 +16,36 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useUserAuth } from '../../context/UserAuthContext';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link as RouterLink } from 'react-router-dom';
+import axios from 'axios';
 
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const { signUp } = useUserAuth();
   const history = useHistory();
+  const signUp = async (email, password) => {
+    try {
+      await axios.post(
+        'https://firebaseadmin-production.up.railway.app/create-user',
+        { email, password }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
+
+    if (password !== confirmPassword)
+      return setError('Password and confirm password must be the same');
     try {
       await signUp(email, password);
-      history.push('/Login.js');
+      history.push('/login');
     } catch (error) {
       setError(error.message);
       console.log(error);
@@ -47,7 +59,7 @@ export default function SignupCard() {
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      <Stack spacing={8} mx={'auto'} py={12} px={6}>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'} textAlign={'center'}>
             Sign up
@@ -92,6 +104,18 @@ export default function SignupCard() {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
+              <FormControl id="confirmpassword" isRequired>
+                <FormLabel>Confirm Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Password"
+                    onChange={e => {
+                      setConfirmPassword(e.target.value);
+                    }}
+                  />
+                </InputGroup>
+              </FormControl>
               <Stack spacing={10} pt={2}>
                 <Button
                   type="submit"
@@ -109,9 +133,9 @@ export default function SignupCard() {
               <Stack pt={6}>
                 <Text align={'center'}>
                   Already a user?{' '}
-                  <Link color={'purple'} href="http://localhost:3000/Login.js">
-                    Login
-                  </Link>
+                  <RouterLink to={'/login'}>
+                    <Link color={'purple'}>Login</Link>
+                  </RouterLink>
                 </Text>
               </Stack>
             </Stack>
