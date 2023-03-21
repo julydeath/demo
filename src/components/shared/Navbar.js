@@ -7,6 +7,7 @@ import {
   IconButton,
   useBreakpointValue,
   VStack,
+  Text,
 } from '@chakra-ui/react';
 import { FiMenu, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -47,7 +48,9 @@ const Navbar = () => {
       p={2}
     >
       <ButtonGroup>
-        <Button onClick={handleLogo}>inAcademy</Button>
+        <Button onClick={handleLogo} color="purple.500">
+          inAcademy
+        </Button>
       </ButtonGroup>
 
       <HStack spacing="4">
@@ -85,11 +88,12 @@ const Navbar = () => {
             /> */}
           </ButtonGroup>
 
-          <Avatar
-            boxSize="10"
-            name="Christoph Winston"
-            src="https://tinyurl.com/yhkm2ek8"
-          />
+          {user && (
+            <Text fontSize="md" color="purple.500">
+              {user.email}
+            </Text>
+          )}
+
           {/* <ColorModeSwitcher /> */}
         </HStack>
       ) : (
