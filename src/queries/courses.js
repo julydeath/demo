@@ -64,7 +64,7 @@ export const enrollToACourse = async (course_id, accessToken) => {
 
 export const getCourseDetails = async (course_id, accessToken) => {
   const data = await fetchData(
-    `query getCourseDetails($courseId:Int) {
+    `query getCourseDetails($courseId: Int) {
       sections(where: {course_id: {_eq: $courseId}}) {
         id
         name
@@ -72,6 +72,9 @@ export const getCourseDetails = async (course_id, accessToken) => {
           id
           name
           content
+          metadata {
+            read
+          }
         }
       }
     }
@@ -102,4 +105,22 @@ export const getChapterDetails = async (chapter_id, accessToken) => {
   );
 
   return data.data.chapters_by_pk;
+};
+
+export const makeChapterAsRead = async (chapter_id, accessToken) => {
+  const data = await fetchData(
+    `mutation updateChapterMetadata($chapter_id:Int) {
+      insert_metadata_one(object: {chapter_id: $chapter_id, read: true}) {
+        read
+        id
+      }
+    }
+  `,
+    {
+      variables: { chapter_id: chapter_id },
+      headersFromClient: { Authorization: `Bearer ${accessToken}` },
+    }
+  );
+
+  return data.data.insert_metadata_one;
 };

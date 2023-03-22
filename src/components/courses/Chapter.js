@@ -3,8 +3,8 @@ import CourseDetailsLayout from './CourseDetailsLayout';
 import { VStack, Card, Heading, Text } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useUserAuth } from '../../context/UserAuthContext';
-import { useQuery } from 'react-query';
-import { getChapterDetails } from '../../queries/courses';
+import { useQuery, useMutation } from 'react-query';
+import { getChapterDetails, makeChapterAsRead } from '../../queries/courses';
 
 const Chapter = () => {
   const { chapter, section } = useParams();
@@ -13,6 +13,11 @@ const Chapter = () => {
   const { status, data, error, isFetching, isSuccess } = useQuery(
     'getChapterDetails',
     async () => await getChapterDetails(chapter, user?.accessToken)
+  );
+
+  const { data: add } = useQuery(
+    'makeChapterAsRead',
+    async () => await makeChapterAsRead(chapter, user?.accessToken)
   );
 
   if (isFetching && !data) {

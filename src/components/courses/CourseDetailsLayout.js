@@ -34,73 +34,6 @@ const CourseDetailsLayout = ({ children }) => {
 
   console.log(data);
 
-  // const data = [
-  //   {
-  //     id: 1,
-  //     name: 'section 1',
-  //     chapters: [
-  //       {
-  //         id: 1,
-  //         name: 'chapter 1',
-  //         read: true,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'chapter 2',
-  //         read: true,
-  //       },
-  //       {
-  //         id: 3,
-  //         name: 'chapter 3',
-  //         read: false,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'section 2',
-  //     chapters: [
-  //       {
-  //         id: 1,
-  //         name: 'chapter 1',
-  //         read: false,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'chapter 2',
-  //         read: false,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     name: 'section 3',
-  //     chapters: [
-  //       {
-  //         id: 1,
-  //         name: 'chapter 1',
-  //         read: false,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: 'chapter 2',
-  //         read: false,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 4,
-  //     name: 'section 4',
-  //     chapters: [
-  //       {
-  //         id: 1,
-  //         name: 'chapter 1',
-  //         read: false,
-  //       },
-  //     ],
-  //   },
-  // ];
-
   if (isFetching && !data) {
     return <div>Loading</div>;
   }
@@ -143,7 +76,7 @@ const CourseDetailsLayout = ({ children }) => {
                           </AccordionButton>
 
                           <AccordionPanel pb={4}>
-                            {section.chapters.map(({ id, name, read }) => {
+                            {section.chapters.map(({ id, name, metadata }) => {
                               return (
                                 <HStack key={id} justify="space-between">
                                   <Link
@@ -153,7 +86,11 @@ const CourseDetailsLayout = ({ children }) => {
                                     <Text>{name}</Text>
                                   </Link>
 
-                                  {/* <FaCheckCircle color={read ? 'green' : ''} /> */}
+                                  {metadata.length === 0 && <FaCheckCircle />}
+
+                                  {metadata[0]?.read && (
+                                    <FaCheckCircle color="green" />
+                                  )}
                                 </HStack>
                               );
                             })}
