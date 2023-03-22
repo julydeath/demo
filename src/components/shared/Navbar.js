@@ -29,6 +29,7 @@ const Navbar = () => {
     try {
       await logOut();
       window.localStorage.removeItem('accessToken');
+      history.push('/');
     } catch (error) {
       console.log(error);
     }
