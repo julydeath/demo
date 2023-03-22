@@ -28,6 +28,7 @@ const Navbar = () => {
   const handleLogOut = async () => {
     try {
       await logOut();
+      window.localStorage.removeItem('accessToken');
     } catch (error) {
       console.log(error);
     }

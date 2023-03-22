@@ -40,7 +40,10 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      await logIn(email, password);
+      const { user } = await logIn(email, password);
+
+      window.localStorage.setItem('accessToken', user?.accessToken);
+
       history.push('/');
     } catch (error) {
       setError(error.message);

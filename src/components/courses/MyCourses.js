@@ -9,7 +9,10 @@ import { Center, CircularProgress } from '@chakra-ui/react';
 
 const MyCourses = () => {
   const { user } = useUserAuth();
-  console.log(user.accessToken);
+
+  const accessToken =
+    window.localStorage.getItem('accessToken') || user.accessToken;
+
   const {
     status,
     data: products,
@@ -18,7 +21,7 @@ const MyCourses = () => {
     isSuccess,
   } = useQuery(
     'enrolledCourses',
-    async () => await getAllEnrolledCoursesData(user?.accessToken)
+    async () => await getAllEnrolledCoursesData(accessToken)
   );
 
   if (isFetching) {
