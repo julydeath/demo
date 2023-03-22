@@ -15,6 +15,12 @@ const CoursePage = () => {
     isSuccess,
   } = useQuery('allCourses', async () => await getAllCoursesData());
 
+  if (isSuccess) {
+    if (products?.length === 0) {
+      return <div>No Courses Enroleed</div>;
+    }
+  }
+
   if (isFetching && !products)
     return (
       <Center>
@@ -37,7 +43,7 @@ const CoursePage = () => {
       }}
     >
       <ProductGrid>
-        {products.map(product => (
+        {products?.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </ProductGrid>

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { MyCourseCard } from './MyCourseCard';
-// import { products } from './_data';
 import { useQuery } from 'react-query';
 import { ProductGrid } from './ProductGrid';
 import { getAllEnrolledCoursesData } from '../../queries/courses';
 import { useUserAuth } from '../../context/UserAuthContext';
+import { Center, CircularProgress } from '@chakra-ui/react';
 
 const MyCourses = () => {
   const { user } = useUserAuth();
+  console.log(user.accessToken);
   const {
     status,
     data: products,
@@ -21,7 +22,9 @@ const MyCourses = () => {
   );
 
   if (isFetching) {
-    return <div>loading</div>;
+    <Center>
+      <CircularProgress isIndeterminate color="purple.300" />
+    </Center>;
   }
 
   if (isSuccess) {

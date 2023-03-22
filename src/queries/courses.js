@@ -61,3 +61,45 @@ export const enrollToACourse = async (course_id, accessToken) => {
 
   return data.data.insert_enrollments_one;
 };
+
+export const getCourseDetails = async (course_id, accessToken) => {
+  const data = await fetchData(
+    `query getCourseDetails($courseId:Int) {
+      sections(where: {course_id: {_eq: $courseId}}) {
+        id
+        name
+        chapters {
+          id
+          name
+          content
+        }
+      }
+    }
+  `,
+    {
+      variables: { courseId: course_id },
+      headersFromClient: { Authorization: `Bearer ${accessToken}` },
+    }
+  );
+
+  return data.data.sections;
+};
+
+export const getChapterDetails = async (chapter_id, accessToken) => {
+  const data = await fetchData(
+    `query getChapterDetails($chapter_id: Int!) {
+      chapters_by_pk(id: $chapter_id) {
+        id
+        name
+        content
+      }
+    }
+  `,
+    {
+      variables: { chapter_id: chapter_id },
+      headersFromClient: { Authorization: `Bearer ${accessToken}` },
+    }
+  );
+
+  return data.data.chapters_by_pk;
+};

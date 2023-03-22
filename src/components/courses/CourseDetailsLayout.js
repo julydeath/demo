@@ -19,76 +19,91 @@ import {
 import React from 'react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { FaCheckCircle } from 'react-icons/fa';
+import { useUserAuth } from '../../context/UserAuthContext';
+import { useQuery } from 'react-query';
+import { getCourseDetails } from '../../queries/courses';
 
 const CourseDetailsLayout = ({ children }) => {
   const { id: courseId } = useParams();
+  const { user } = useUserAuth();
 
-  const data = [
-    {
-      id: 1,
-      name: 'section 1',
-      chapters: [
-        {
-          id: 1,
-          name: 'chapter 1',
-          read: true,
-        },
-        {
-          id: 2,
-          name: 'chapter 2',
-          read: true,
-        },
-        {
-          id: 3,
-          name: 'chapter 3',
-          read: false,
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: 'section 2',
-      chapters: [
-        {
-          id: 1,
-          name: 'chapter 1',
-          read: false,
-        },
-        {
-          id: 2,
-          name: 'chapter 2',
-          read: false,
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: 'section 3',
-      chapters: [
-        {
-          id: 1,
-          name: 'chapter 1',
-          read: false,
-        },
-        {
-          id: 2,
-          name: 'chapter 2',
-          read: false,
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: 'section 4',
-      chapters: [
-        {
-          id: 1,
-          name: 'chapter 1',
-          read: false,
-        },
-      ],
-    },
-  ];
+  const { status, data, error, isFetching, isSuccess } = useQuery(
+    'allCoursesWithSectionsAndChapters',
+    async () => await getCourseDetails(courseId, user?.accessToken)
+  );
+
+  console.log(data);
+
+  // const data = [
+  //   {
+  //     id: 1,
+  //     name: 'section 1',
+  //     chapters: [
+  //       {
+  //         id: 1,
+  //         name: 'chapter 1',
+  //         read: true,
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'chapter 2',
+  //         read: true,
+  //       },
+  //       {
+  //         id: 3,
+  //         name: 'chapter 3',
+  //         read: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'section 2',
+  //     chapters: [
+  //       {
+  //         id: 1,
+  //         name: 'chapter 1',
+  //         read: false,
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'chapter 2',
+  //         read: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'section 3',
+  //     chapters: [
+  //       {
+  //         id: 1,
+  //         name: 'chapter 1',
+  //         read: false,
+  //       },
+  //       {
+  //         id: 2,
+  //         name: 'chapter 2',
+  //         read: false,
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'section 4',
+  //     chapters: [
+  //       {
+  //         id: 1,
+  //         name: 'chapter 1',
+  //         read: false,
+  //       },
+  //     ],
+  //   },
+  // ];
+
+  if (isFetching && !data) {
+    return <div>Loading</div>;
+  }
 
   return (
     <VStack m={10}>
@@ -105,9 +120,9 @@ const CourseDetailsLayout = ({ children }) => {
             <Heading>This is the Name of the Course</Heading>
           </Center>
           <Center>
-            <Text>
-              Written by <span>PLP</span>
-            </Text>
+            {/* <Text>
+              Written by <span></span>
+            </Text> */}
           </Center>
         </Card>
 
@@ -138,7 +153,7 @@ const CourseDetailsLayout = ({ children }) => {
                                     <Text>{name}</Text>
                                   </Link>
 
-                                  <FaCheckCircle color={read ? 'green' : ''} />
+                                  {/* <FaCheckCircle color={read ? 'green' : ''} /> */}
                                 </HStack>
                               );
                             })}
